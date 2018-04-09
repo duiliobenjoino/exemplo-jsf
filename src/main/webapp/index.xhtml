@@ -1,0 +1,58 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="titulo">Cervejas cadastradas</ui:define>
+    
+    <ui:define name="corpo">
+        <h:form id="form-consulta">
+            
+            <p:growl id="growl" showDetail="true" sticky="false" life="2000" severity="info" /> 
+            
+            <p:dataTable id="dataTable-registros"
+                                        var="cerveja" 
+                                        value="#{cervejasController.cervejas}"
+                                        reflow="true"
+                                        rows="10"
+                                        paginator="true"
+                                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="5,10,15" paginatorPosition="bottom"
+                style="width:100%;">
+
+                <p:column headerText="#" style="width:30px; text-align: center;">
+                    <h:outputText value="#{cerveja.id}" />
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{cerveja.nome}" />
+                </p:column>
+                <p:column headerText="Origem">
+                    <h:outputText value="#{cerveja.origem}" />
+                </p:column>
+                <p:column headerText="Sabor">
+                    <h:outputText value="#{cerveja.sabor}" />
+                </p:column>
+                <p:column headerText="Teor alcólico">
+                    <h:outputText value="#{cerveja.teorAlcolico}" />%
+                </p:column>
+                <p:column headerText="Valor">
+                    <h:outputText value="#{cerveja.valor}">
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" currencyCode="R$" locale="pt_BR" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Opções" style="width:80px; text-align: center;">
+                    <p:commandButton icon="fa fa-edit" 
+                        title="Editar Registro" ajax="true"                        					 
+                        actionListener="#{cervejasController.irParaEditar(cerveja)}"/>
+                    <p:commandButton icon="fa fa-trash" 
+                        title="Remover Registro" ajax="true"                      					 
+                        actionListener="#{cervejasController.remover(cerveja)}"
+                        update="@form"/>
+                </p:column>
+            </p:dataTable>
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

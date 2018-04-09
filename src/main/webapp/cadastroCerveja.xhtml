@@ -1,0 +1,63 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="titulo">#{cadastroCervejaController.titulo}</ui:define>
+    <ui:define name="corpo">
+        <hr/>
+        <h:form>	 	
+            <p:inputText value="#{cadastroCervejaController.cerveja.id}" id="id" type="hidden" />
+            <h:panelGrid id="panelGrid-campos-form" columns="2" cellpadding="10">
+                
+                <p:outputLabel value="Nome" for="nome"/>
+                <p:inputText id="nome" 
+                                  style="width:300px" maxlength="70" 
+                                  value="#{cadastroCervejaController.cerveja.nome}"
+                                  required="true"
+                                  requiredMessage="O nome é obrigatório"/>
+
+                <p:outputLabel value="Valor" for="valor"/>
+                <p:inputText id="valor"
+                                  styleClass="moeda" size="10" 
+                                  value="#{cadastroCervejaController.cerveja.valor}"
+                                  required="true" requiredMessage="O valor é obrigatório">
+                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                </p:inputText>
+                
+                <p:outputLabel value="Teor alcólico" for="teorAlcolico"/>
+                <p:inputText id="teorAlcolico"
+                                  styleClass="moeda" size="10" 
+                                  value="#{cadastroCervejaController.cerveja.teorAlcolico}"
+                                  required="false">
+                    <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                </p:inputText>
+                
+                <p:outputLabel value="Origem" for="origem"/>
+                <h:selectOneMenu id="origem" value="#{cadastroCervejaController.cerveja.origem}" >
+                    <f:selectItems value="#{cadastroCervejaController.origens}" />
+                </h:selectOneMenu>
+
+                <p:outputLabel value="Sabor" for="sabor"/>
+                <h:selectOneMenu id="sabor" value="#{cadastroCervejaController.cerveja.sabor}" >
+                    <f:selectItems value="#{cadastroCervejaController.sabores}" />
+                </h:selectOneMenu>
+
+                <p:spacer/>
+
+                <p:commandButton value="Salvar" ajax="true"
+                                 icon="ui-icon-gear" styleClass="ui-priority-primary"
+                                 update="@form" oncomplete="function(data) { if (data.status === 'success') { configurarMoeda(); } }"
+                                 actionListener="#{cadastroCervejaController.salvar}"/>
+            </h:panelGrid>
+            
+            <p:messages showDetail="true" autoUpdate="true" closable="true" severity="warn"/>
+            <p:messages autoUpdate="true" closable="true" severity="error"/>		
+            <p:messages showDetail="true" autoUpdate="true" closable="true" severity="info" />
+        
+        </h:form>
+
+    </ui:define>
+</ui:composition>
